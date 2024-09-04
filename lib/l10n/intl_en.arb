@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "applicationTitle": "Flutter Demo Structure",
+  "@appName": {
+    "description": "Application Name"
+  },
+  "connectionTimedOut": "The connection has timed out. Please try again",
+  "connectionProblem": "There are some problems with the connection. Please try again",
+  "invalidCredentials": "Invalid credentials",
+  "home": "Home",
+  "geofencing": "Geofencing",
+  "settings": "Settings",
+  "selectLanguage": "Select Language",
+  "changeLanguage": "Change Language",
+  "countTask": "Count Task",
+  "allPosts": "All Posts",
+  "allPostDemo": "All Post Demo",
+  "allPostDemoGetx": "All Post Demo GetX",
+  "allPostDemoProvider": "All post demo provider",
+  "allPostProvider": "All Post provider",
+  "customAnimation": "Custom Animation",
+  "customAnimationDemo": "Custom Animation Demo"
+}
