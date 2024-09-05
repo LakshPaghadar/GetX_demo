@@ -20,22 +20,37 @@ jobs:
       # Step 1: Checkout the repository
       - uses: actions/checkout@v3
 
-      # Step 2: Setup Java environment (Zulu JDK 17)
+      # Step 2: Cache Flutter dependencies (to prevent version conflicts)
+      - name: Cache Pub dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.pub-cache
+            flutter/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      # Step 3: Setup Java environment (Zulu JDK 17)
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # Step 3: Setup Flutter with the stable channel for macOS
+      # Step 4: Setup Flutter with the stable channel for macOS
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
 
-      # Step 4: Build Android APK (split-per-abi)
+      # Step 5: Run Flutter Pub Get to resolve dependencies
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Step 6: Build Android APK (split-per-abi)
       - run: flutter build apk --release --split-per-abi
 
-      # Step 5: Build iOS IPA (without code signing)
+      # Step 7: Build iOS IPA (without code signing)
       - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
@@ -45,7 +60,7 @@ jobs:
           cd ..
           zip -r app.ipa Payload
 
-      # Step 6: Push artifacts (APK and IPA) to GitHub Releases
+      # Step 8: Push artifacts (APK and IPA) to GitHub Releases
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
@@ -54,4 +69,3 @@ jobs:
             build/ios/iphoneos/app.ipa
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
-
