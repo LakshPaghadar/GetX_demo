@@ -47,7 +47,7 @@ jobs:
 
       # Step 6: Push artifacts (APK and IPA) to GitHub Releases
       - name: Push to Releases
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v2
         with:
           artifacts: |
             build/app/outputs/apk/release/*.apk,
