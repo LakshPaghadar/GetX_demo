@@ -8,23 +8,34 @@ on:
       - main
       - master
       - demo1_implement
+
 name: "Build & Release"
+
 jobs:
   build:
     name: Build & Release
     runs-on: macos-latest
+
     steps:
+      # Step 1: Checkout the repository
       - uses: actions/checkout@v3
+
+      # Step 2: Setup Java environment (Zulu JDK 17)
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
+
+      # Step 3: Setup Flutter with the stable channel for macOS
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
 
+      # Step 4: Build Android APK (split-per-abi)
       - run: flutter build apk --release --split-per-abi
+
+      # Step 5: Build iOS IPA (without code signing)
       - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
@@ -33,17 +44,14 @@ jobs:
           ln -s ../Runner.app
           cd ..
           zip -r app.ipa Payload
+
+      # Step 6: Push artifacts (APK and IPA) to GitHub Releases
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
+          artifacts: |
+            build/app/outputs/apk/release/*.apk,
+            build/ios/iphoneos/app.ipa
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
 
-
-
-
-
-
-# push to master, main, develop
-# pull request on main master
