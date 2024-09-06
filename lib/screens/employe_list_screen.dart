@@ -123,7 +123,7 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const CustomAnimationDemo()));
+                  builder: (context) => const CustomAnimationPage()));
             },
             child: ListTile(
               leading: const Icon(Icons.settings),

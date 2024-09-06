@@ -23,7 +23,25 @@ class ApiClient {
         'responseType': 'text/plain',
       },
     );
-    dio.interceptors.add(PrettyDioLogger());
+    dio.interceptors.add(PrettyDioLogger(
+      requestHeader: false,
+      requestBody: true,
+      request: true,
+      responseBody: false,
+      responseHeader: false,
+      compact: true,
+    ));
+
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: false,
+        request: false,
+        responseBody: true,
+        responseHeader: true,
+        compact: true,
+      ),
+    );
 
     return dio;
   }
